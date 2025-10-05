@@ -2,18 +2,10 @@ export const PersonForm = ({ formData, handleChange, errors = {} }) => {
   const validateInput = (e) => {
     const { name, value } = e.target;
     
-    // Para DNI: solo números y máximo 10 dígitos
-    if (name === 'dni') {
-      if (!/^\d*$/.test(value) || value.length > 10) {
-        return;
-      }
-    }
-    
-    // Para nombres y apellidos: solo letras y espacios
-    if (name === 'nombres' || name === 'apellidos') {
-      if (!/^[A-Za-záéíóúÁÉÍÓÚñÑ ]*$/.test(value)) {
-        return;
-      }
+    // Validación básica solo para longitud del DNI
+    if (name === 'dni' && value.length > 10) {
+      e.target.value = value.slice(0, 10);
+      return;
     }
 
     handleChange(e);

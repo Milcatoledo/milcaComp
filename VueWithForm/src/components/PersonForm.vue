@@ -24,21 +24,9 @@ const handleInput = (e) => {
     const { name, value } = e.target;
     let newValue = value;
 
-    switch (name) {
-        case 'dni':
-            // Solo permite números y máximo 10 dígitos
-            newValue = value.replace(/\D/g, '').slice(0, 10);
-            break;
-        case 'nombres':
-        case 'apellidos':
-            // Solo permite letras, espacios y caracteres especiales específicos
-            newValue = value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
-            break;
-    }
-
-    // Solo emite si el valor ha cambiado
-    if (newValue !== value) {
-        e.target.value = newValue;
+    // Validaciones básicas para UX
+    if (name === 'dni' && value.length > 10) {
+        newValue = value.slice(0, 10);
     }
 
     formDataLocal.value = {

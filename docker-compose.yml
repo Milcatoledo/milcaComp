@@ -28,5 +28,33 @@ services:
       - mongo-data:/data/db
     restart: unless-stopped
 
+  react:
+    build:
+      context: ./ReactWithForm
+      dockerfile: dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./ReactWithForm:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:3000
+    depends_on:
+      - express
+
+  vue:
+    build:
+      context: ./VueWithForm
+      dockerfile: dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./VueWithForm:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:3000
+    depends_on:
+      - express
+
 volumes:
   mongo-data:

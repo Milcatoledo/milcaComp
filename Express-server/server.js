@@ -19,19 +19,41 @@ mongoose.connect(MONGODB_URI, {
 .then(() => console.log('Conectado a MongoDB - Base de datos'))
 .catch(e => console.error('Error conexión MongoDB:', e));
 
+const handleValidationError = (error) => {
+    const errors = {};
+    Object.keys(error.errors).forEach(key => {
+        errors[key] = {
+            message: error.errors[key].message
+        };
+    });
+    return errors;
+};
+
 // Crear
 app.post('/', async (req, res) => {
     try {
+        // Limpiar datos de entrada
+        if (req.body.dni) req.body.dni = req.body.dni.trim();
+        if (req.body.nombres) req.body.nombres = req.body.nombres.trim();
+        if (req.body.apellidos) req.body.apellidos = req.body.apellidos.trim();
+
         const persona = new Persona(req.body);
         await persona.save();
         res.status(201).json(persona);
     } catch (error) {
         if (error.code === 11000) {
-            return res.status(400).json({ message: 'El DNI ingresado ya se encuentra registrado.' });
+            return res.status(400).json({ 
+                errors: {
+                    dni: { message: 'El DNI ingresado ya se encuentra registrado.' }
+                }
+            });
         }
         if (error.name === 'ValidationError') {
-            return res.status(400).json({ errors: error.errors });
+            return res.status(400).json({ 
+                errors: handleValidationError(error)
+            });
         }
+        console.error('Error interno:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 });
