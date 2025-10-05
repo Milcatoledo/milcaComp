@@ -90,8 +90,8 @@ const handleInput = (e) => {
         id="fechaNacimiento"
         type="date" 
         name="fechaNacimiento" 
-        :value="formData.fechaNacimiento || ''" 
-        @input="handleChange" 
+        :value="formDataLocal.fechaNacimiento || ''" 
+        @input="handleInput" 
         :class="{ error: errors.fechaNacimiento }"
         required 
         />
@@ -103,8 +103,8 @@ const handleInput = (e) => {
         <select 
         id="genero" 
         name="genero" 
-        :value="formData.genero || 'Masculino'" 
-        @change="handleChange"
+        :value="formDataLocal.genero || 'Masculino'" 
+        @input="handleInput"
         :class="{ error: errors.genero }"
         required
         >
@@ -120,8 +120,8 @@ const handleInput = (e) => {
         <select 
             id="ciudad" 
             name="ciudad" 
-            :value="formData.ciudad || 'Milagro'" 
-            @change="handleChange"
+            :value="formDataLocal.ciudad || 'Milagro'" 
+            @input="handleInput"
             :class="{ error: errors.ciudad }"
             required
         >
