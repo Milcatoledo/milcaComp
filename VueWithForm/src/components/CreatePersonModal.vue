@@ -49,13 +49,12 @@ const handleSubmit = async () => {
             ciudad: 'Milagro'
         };
     } catch (err) {
-        // Si recibimos errores de validación específicos
+        // errores de validación específicos
         if (err.errors) {
             errors.value = err.errors;
         }
-        // Si recibimos un mensaje específico (ej: DNI duplicado)
+        // mensaje específico 
         else if (err.message) {
-            // Si el mensaje es sobre el DNI, lo mostramos en el campo
             if (err.message.toLowerCase().includes('dni')) {
                 errors.value = {
                     dni: { message: err.message }
