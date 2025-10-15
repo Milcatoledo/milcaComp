@@ -32,7 +32,6 @@ const handleValidationError = (error) => {
 // Crear
 app.post('/', async (req, res) => {
     try {
-        // Limpiar datos de entrada
         if (req.body.dni) req.body.dni = req.body.dni.trim();
         if (req.body.nombres) req.body.nombres = req.body.nombres.trim();
         if (req.body.apellidos) req.body.apellidos = req.body.apellidos.trim();

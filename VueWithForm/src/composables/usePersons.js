@@ -1,7 +1,5 @@
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
-
-const API_URL = 'http://localhost:3000';
+import { getPersons, createPerson as apiCreatePerson, updatePerson as apiUpdatePerson, deletePerson as apiDeletePerson } from '../Api/personsApi';
 
 export function usePersons() {
   const persons = ref([]);
@@ -11,8 +9,8 @@ export function usePersons() {
   const fetchPersons = async () => {
     loading.value = true;
     try {
-      const response = await axios.get(API_URL);
-      persons.value = response.data;
+      const data = await getPersons();
+      persons.value = data;
       error.value = null;
     } catch (err) {
       error.value = err.response?.data?.message || 'Error al cargar las personas';
@@ -39,9 +37,9 @@ export function useCreatePerson() {
   const createPerson = async (personData) => {
     creating.value = true;
     try {
-      const response = await axios.post(API_URL, personData);
+      const data = await apiCreatePerson(personData);
       error.value = null;
-      return response.data;
+      return data;
     } catch (err) {
       let errorMessage = 'Ocurrió un error inesperado.';
 
@@ -51,7 +49,7 @@ export function useCreatePerson() {
           throw { errors: err.response.data.errors };
         } 
         else if (err.response.data.message) {
-          // Si es un error con mensaje específico (ej: DNI duplicado)
+          
           throw { message: err.response.data.message };
         }
       }
@@ -77,9 +75,9 @@ export function useUpdatePerson() {
   const updatePerson = async (id, personData) => {
     updating.value = true;
     try {
-      const response = await axios.put(`${API_URL}/${id}`, personData);
+      const data = await apiUpdatePerson(id, personData);
       error.value = null;
-      return response.data;
+      return data;
     } catch (err) {
       error.value = err.response?.data?.errors || err.response?.data?.message || 'Error al actualizar la persona';
       throw error.value;
@@ -106,9 +104,9 @@ export function useDeletePerson() {
 
     deleting.value = true;
     try {
-      const response = await axios.delete(`${API_URL}/${id}`);
+      const data = await apiDeletePerson(id);
       error.value = null;
-      return response.data;
+      return data;
     } catch (err) {
       let errorMessage = 'Error al eliminar la persona';
       

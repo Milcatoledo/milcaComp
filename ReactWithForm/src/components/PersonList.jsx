@@ -44,6 +44,7 @@ export const PersonList = () => {
             isLoading={isLoading}
         />
 
+
         {isCreateModalOpen && (
             <CreatePersonModal 
             show={isCreateModalOpen} 
